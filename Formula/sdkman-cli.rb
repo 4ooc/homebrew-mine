@@ -12,37 +12,41 @@ class SdkmanCli < Formula
     %w[tmp ext var].each { |dir| mkdir prefix/dir }
     %w[etc candidates].each { |dir| mkdir pkgetc/dir }
 
-    system "curl", "-s", "https://api.sdkman.io/2/candidates/all", "-o", prefix/"var/candidates"
-
-    prefix.install_symlink pkgetc => "etc"
+    prefix.install_symlink pkgetc/"etc"
     prefix.install_symlink pkgetc/"candidates"
 
-    (prefix/"etc/config").write <<~EOS
-      sdkman_offline_mode=true
-      sdkman_auto_answer=false
-      sdkman_auto_complete=true
-      sdkman_auto_env=false
-      sdkman_auto_update=false
-      sdkman_beta_channel=false
-      sdkman_colour_enable=true
-      sdkman_curl_connect_timeout=7
-      sdkman_curl_max_time=10
-      sdkman_debug_mode=false
-      sdkman_insecure_ssl=false
-      sdkman_rosetta2_compatible=false
-      sdkman_selfupdate_feature=false
-    EOS
+    system "curl", "-s", "https://api.sdkman.io/2/candidates/all", "-o", prefix/"var/candidates"
+
+    (prefix/"etc/config").open('a+') {|f|
+      if f.size <= 0
+        f.write <<~EOS
+          SDKMAN_OFFLINE_MODE=false
+          sdkman_auto_answer=false
+          sdkman_auto_complete=true
+          sdkman_auto_env=false
+          sdkman_auto_update=false
+          sdkman_beta_channel=false
+          sdkman_colour_enable=true
+          sdkman_curl_connect_timeout=7
+          sdkman_curl_max_time=10
+          sdkman_debug_mode=false
+          sdkman_insecure_ssl=false
+          sdkman_rosetta2_compatible=false
+          sdkman_selfupdate_feature=false
+        EOS
+      end
+    }
   end
 
   def caveats
     <<~EOS
-      After successful installation add the following lines to the end of your ~/.zshrc:
-          export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
+      Add the following to #{shell_profile} or your desired shell configuration file:
+          export SDKMAN_DIR=$(brew --prefix sdkman-cli)
           [[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
     EOS
   end
 
   test do
-    assert_match version, shell_output("export SDKMAN_DIR=#{libexec} && source #{libexec}/bin/sdkman-init.sh && sdk version")
+    assert_match version, shell_output("export SDKMAN_DIR=#{prefix} && source #{prefix}/bin/sdkman-init.sh && sdk version")
   end
 end
