@@ -1,9 +1,9 @@
 class SdkmanCli < Formula
   desc "Sdkman - The Software Development Kit Manager"
   homepage "https://sdkman.io"
-  url "https://github.com/4ooc/sdkman-cli/releases/download/5.16.1/sdkman-cli-5.16.1.zip"
-  version "5.16.1"
-  sha256 "c592cafbb3eeee7f895989cde6bbc5d685e38d53d950a92429a744bad21d907e"
+  url "https://github.com/4ooc/sdkman-cli/releases/download/5.16.2/sdkman-cli-5.16.2.zip"
+  version "5.16.2"
+  sha256 "ff230ac2ebf8606f60f913e33e8f918e072956cee1bf01e8da3ba7446ef19f96"
   license "Apache-2.0"
 
   def install
