@@ -1,6 +1,6 @@
 cask "alacritty-preview" do
-  version "0.12.0"
-  sha256 "33c9e94c7ffc8d248f10a046b7883c3c5bffae80da8492bfa9fea78e3b58fc43"
+  version "0.12.1-rc1"
+  sha256 "9e4e036a51ab7fa7f4d472382324b4b756c23a2b9763b7314e013534ce23550d"
 
   url "https://github.com/alacritty/alacritty/releases/download/v#{version}/Alacritty-v#{version}.dmg"
   name "Alacritty"
@@ -9,7 +9,7 @@ cask "alacritty-preview" do
 
   livecheck do
     url :url
-    regex(/^v?(\d+(?:[.-][0-9rc]+)+)$/i)
+    regex(/^v?(0.\d+(?:[.-][0-9rc]+)+)$/i)
     strategy :git do |tags, regex|
       tags.map { |tag| tag[regex, 1] }
     end
